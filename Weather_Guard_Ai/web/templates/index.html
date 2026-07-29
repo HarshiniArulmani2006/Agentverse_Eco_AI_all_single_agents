@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WeatherWise AI – Intelligent Weather Decision Agent</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <!-- Header -->
+    <header>
+        <div class="brand-title">
+            <h1>WeatherWise AI</h1>
+            <span class="badge-pill">Fetch.ai uAgents Protocol</span>
+        </div>
+        <div class="search-box">
+            <input type="text" id="cityInput" placeholder="Enter City (e.g. Coimbatore, London, Tokyo)" value="Coimbatore">
+            <button class="btn-primary" onclick="fetchWeatherData()">Analyze Weather</button>
+        </div>
+    </header>
+
+    <!-- Main Grid -->
+    <div class="grid-layout">
+        
+        <!-- Left Column: Real-time Telemetry & Risk Meter -->
+        <div class="left-col">
+            
+            <!-- Real-time Weather Card -->
+            <div class="card">
+                <div class="card-title">⚡ Real-time Telemetry</div>
+                <div class="weather-hero">
+                    <h2 id="locationName" style="font-size: 1.3rem; color: var(--text-muted);">Coimbatore, TN</h2>
+                    <div class="temp-large"><span id="tempVal">--</span>°C</div>
+                    <div class="feels-like">Feels like <span id="feelsLikeVal">--</span>°C</div>
+                    <div class="condition-tag" id="conditionText">Loading...</div>
+                </div>
+
+                <div class="metrics-grid">
+                    <div class="metric-item">
+                        <div class="metric-label">Humidity</div>
+                        <div class="metric-val" id="humidityVal">--%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Wind Speed</div>
+                        <div class="metric-val" id="windVal">-- km/h</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Rain Prob</div>
+                        <div class="metric-val" id="rainVal">--%</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">UV Index</div>
+                        <div class="metric-val" id="uvVal">--</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Pressure</div>
+                        <div class="metric-val" id="pressureVal">-- hPa</div>
+                    </div>
+                    <div class="metric-item">
+                        <div class="metric-label">Cloud Cover</div>
+                        <div class="metric-val" id="cloudVal">--%</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Risk Engine Card -->
+            <div class="card">
+                <div class="card-title">🛡️ Weather Risk Engine</div>
+                <div class="risk-meter-container">
+                    <div class="risk-header">
+                        <span style="font-size: 0.9rem; font-weight: 600;">Risk Score: <span id="riskScoreNum">0</span>/100</span>
+                        <span class="risk-badge risk-level-LOW" id="riskLevelBadge">LOW</span>
+                    </div>
+                    <div class="meter-track">
+                        <div class="meter-fill" id="meterFill"></div>
+                    </div>
+                    <div style="font-size: 0.82rem; color: var(--text-muted); line-height: 1.4;" id="riskReason">
+                        Calculating risk analysis...
+                    </div>
+                </div>
+                <div id="alertsContainer" style="margin-top: 14px;"></div>
+            </div>
+
+        </div>
+
+        <!-- Right Column: Recommendations, Conversational AI, Environmental Intelligence -->
+        <div class="right-col">
+            
+            <!-- Conversational AI Assistant -->
+            <div class="card">
+                <div class="card-title">🤖 Smart Decision Engine & Conversational AI</div>
+                
+                <div class="quick-prompts">
+                    <button class="chip-btn" onclick="sendQuickPrompt('Will it rain today?')">☔ Will it rain today?</button>
+                    <button class="chip-btn" onclick="sendQuickPrompt('Should I carry an umbrella?')">☂️ Should I carry an umbrella?</button>
+                    <button class="chip-btn" onclick="sendQuickPrompt('Can I go for a bike ride?')">🚴 Can I go for a bike ride?</button>
+                    <button class="chip-btn" onclick="sendQuickPrompt('I\'m planning a picnic tomorrow')">🧺 Planning a picnic tomorrow</button>
+                    <button class="chip-btn" onclick="sendQuickPrompt('Can I wash clothes today?')">👕 Can I wash clothes today?</button>
+                    <button class="chip-btn" onclick="sendQuickPrompt('Is today suitable for farming?')">🌾 Suitable for farming?</button>
+                </div>
+
+                <div class="chat-input-row">
+                    <input type="text" id="chatInput" placeholder="Ask WeatherWise anything (e.g. Is tomorrow better than today?)...">
+                    <button class="btn-primary" onclick="submitChatQuery()">Ask Agent</button>
+                </div>
+
+                <div class="chat-response-box" id="chatAnswer">
+                    Select a quick prompt or ask a custom question to get an AI reasoned answer!
+                </div>
+            </div>
+
+            <!-- Natural Language Daily Summary -->
+            <div class="card">
+                <div class="card-title">📝 Today's Weather Summary</div>
+                <p id="dailySummaryText" style="font-size: 0.95rem; line-height: 1.6; color: #cbd5e1; white-space: pre-line;">
+                    Loading daily weather summary...
+                </p>
+            </div>
+
+            <!-- Outdoor Activities Suitability (9 Activities) -->
+            <div class="card">
+                <div class="card-title">⚽ Outdoor Activity Suitability</div>
+                <div class="activities-grid" id="activitiesGrid"></div>
+            </div>
+
+            <!-- Environmental Intelligence Grid -->
+            <div class="card">
+                <div class="card-title">🌱 Environmental Intelligence</div>
+                <div class="env-grid" id="envGrid"></div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- 7-Day Forecast Section -->
+    <div class="card">
+        <div class="card-title">📅 7-Day Weather Forecast</div>
+        <div class="forecast-scroll" id="forecastScroll"></div>
+    </div>
+
+    <!-- Multi-Agent Interoperability JSON Viewer -->
+    <div class="card">
+        <div class="card-title">🔗 Multi-Agent System Protocol Output (JSON)</div>
+        <pre class="json-view" id="jsonOutput">Loading multi-agent protocol payload...</pre>
+    </div>
+</div>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
