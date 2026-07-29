@@ -1,0 +1,47 @@
+{
+  "demo_mode": true,
+  "system_status": "online",
+  "agent_address": "agent1q2ecowaste_ai_demo_address_hash_2026",
+  "sample_wastes": [
+    {
+      "name": "Plastic Bottle",
+      "category": "plastic",
+      "recyclable": true,
+      "disposal": "Recycling Center",
+      "confidence": 97
+    },
+    {
+      "name": "Food Waste",
+      "category": "organic",
+      "recyclable": false,
+      "disposal": "Composting Facility",
+      "confidence": 98
+    },
+    {
+      "name": "Glass Bottle",
+      "category": "glass",
+      "recyclable": true,
+      "disposal": "Glass Recycling Center",
+      "confidence": 95
+    },
+    {
+      "name": "Battery",
+      "category": "hazardous",
+      "recyclable": false,
+      "disposal": "Hazardous Waste Center",
+      "confidence": 99
+    },
+    {
+      "name": "Laptop",
+      "category": "ewaste",
+      "recyclable": true,
+      "disposal": "E-Waste Collection Center",
+      "confidence": 96
+    }
+  ],
+  "smart_bins_summary": {
+    "total_monitored": 8,
+    "urgent_collections": 3,
+    "average_fill_pct": 68.4
+  }
+}

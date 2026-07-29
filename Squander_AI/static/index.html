@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EcoWaste AI – Intelligent Waste Management Agent</title>
+  <meta name="description" content="EcoWaste AI is an advanced AI-powered Waste Management Agent built on Fetch.ai AgentVerse. Classify waste, analyse recycling potential, estimate carbon footprints, monitor smart bins and more." />
+  <meta name="theme-color" content="#050d0a" />
+  <link rel="stylesheet" href="/static/css/styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-brand">
+    <div class="header-logo">🌿</div>
+    <div>
+      <div class="header-title">EcoWaste AI</div>
+      <div class="header-subtitle">Fetch.ai AgentVerse · uAgents Framework</div>
+    </div>
+  </div>
+  <nav class="header-nav">
+    <a href="#" class="nav-tab active" data-tab="tab-overview">Overview</a>
+    <a href="#" class="nav-tab" data-tab="tab-analyze">Analyze</a>
+    <a href="#" class="nav-tab" data-tab="tab-bins">Smart Bins</a>
+    <a href="#" class="nav-tab" data-tab="tab-forecast">Forecast</a>
+    <a href="#" class="nav-tab" data-tab="tab-game">Eco Game</a>
+    <a href="#" class="nav-tab" data-tab="tab-chat">Chat AI</a>
+    <a href="#" class="nav-tab" data-tab="tab-challenges">Challenges</a>
+    <a href="#" class="nav-tab" data-tab="tab-agent">Multi-Agent</a>
+  </nav>
+  <div class="header-status">
+    <span class="status-dot"></span>
+    <span style="font-size:0.78rem;color:var(--text-secondary)">Agent Online</span>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════════════════
+     HERO BANNER
+════════════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <div class="hero-badge">🤖 Powered by Fetch.ai AgentVerse</div>
+    <h1 class="hero-title">EcoWaste <span class="hero-accent">AI</span> Agent</h1>
+    <p class="hero-subtitle">
+      Intelligent Waste Classification · Recycling Intelligence · Carbon Footprint Analysis<br/>
+      Smart Bin Monitoring · Circular Economy · Explainable AI Decision Making
+    </p>
+    <div class="hero-actions">
+      <button class="btn-primary" onclick="document.querySelector('[data-tab=tab-analyze]').click()">
+        🔍 Analyze Waste
+      </button>
+      <button class="btn-secondary" onclick="document.querySelector('[data-tab=tab-chat]').click()">
+        💬 Ask AI Agent
+      </button>
+    </div>
+  </div>
+  <div class="hero-globe">🌍</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     QUICK INPUT BANNER (always visible)
+════════════════════════════════════════════════════════════ -->
+<div class="quick-input-bar">
+  <form id="analysis-form" class="quick-form">
+    <div class="quick-form-group">
+      <label class="quick-label">Waste Type</label>
+      <input id="input-waste" class="quick-input" type="text" placeholder="e.g. Plastic Bottle, Battery, Laptop…" required list="waste-suggestions" autocomplete="off" />
+      <datalist id="waste-suggestions">
+        <option value="Plastic Bottle" /><option value="Food Waste" /><option value="Glass Bottle" />
+        <option value="Battery" /><option value="Laptop" /><option value="Newspaper" />
+        <option value="Paint Can" /><option value="Medical Syringe" /><option value="Cardboard" />
+        <option value="Aluminium Can" /><option value="Organic Waste" /><option value="Garden Waste" />
+        <option value="Old Clothes" /><option value="Construction Waste" /><option value="Chemical Waste" />
+      </datalist>
+    </div>
+    <div class="quick-form-group">
+      <label class="quick-label">Quantity (kg)</label>
+      <input id="input-qty" class="quick-input" type="number" min="0.1" max="100000" step="0.1" value="1.0" />
+    </div>
+    <div class="quick-form-group">
+      <label class="quick-label">Location</label>
+      <input id="input-location" class="quick-input" type="text" placeholder="City / Area" value="City" />
+    </div>
+    <div class="quick-form-group">
+      <label class="quick-label">Source</label>
+      <select id="input-source" class="quick-input">
+        <option value="residential">🏠 Residential</option>
+        <option value="commercial">🏢 Commercial</option>
+        <option value="industrial">🏭 Industrial</option>
+      </select>
+    </div>
+    <button id="analyze-btn" type="submit" class="btn-primary" style="align-self:flex-end;white-space:nowrap;">
+      🔍 Analyze
+    </button>
+  </form>
+  <div id="analysis-loader" class="loader-bar"></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN CONTENT
+════════════════════════════════════════════════════════════ -->
+<main class="main-content">
+
+  <!-- ─────────────────── TAB: OVERVIEW ─────────────────────── -->
+  <section id="tab-overview" class="tab-panel active">
+
+    <!-- KPI Tiles -->
+    <div class="section-header">
+      <h2 class="section-title">📊 Community Overview</h2>
+      <span class="section-badge">Live Data</span>
+    </div>
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-green">
+        <div class="kpi-icon">♻️</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="stat-recycle-rate">—</div>
+          <div class="kpi-label">Recycling Rate</div>
+          <div class="kpi-trend">↑ Community Target: 60%</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-blue">
+        <div class="kpi-icon">🌿</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="stat-zero-waste">—</div>
+          <div class="kpi-label">Zero Waste Progress</div>
+          <div class="kpi-trend">↑ On track for 2030 goal</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-amber">
+        <div class="kpi-icon">🗑️</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="stat-annual-waste">—</div>
+          <div class="kpi-label">Annual Waste (Residential)</div>
+          <div class="kpi-trend">↓ 8% vs last year</div>
+        </div>
+      </div>
+      <div class="kpi-card kpi-red">
+        <div class="kpi-icon">⚡</div>
+        <div class="kpi-body">
+          <div class="kpi-value" id="stat-urgent-bins">—</div>
+          <div class="kpi-label">Urgent Bin Collections</div>
+          <div class="kpi-trend">Smart Bin Network</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row -->
+    <div class="grid-2" style="margin-top:24px;gap:24px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🥧 Waste Distribution</div>
+          <div class="card-badge">Community Breakdown</div>
+        </div>
+        <div style="height:260px;position:relative;">
+          <canvas id="chartDistribution"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">🌡️ AI Sustainability Scores</div>
+          <div class="card-badge">Explainable AI</div>
+        </div>
+        <div class="score-rings-grid">
+          <div class="score-ring-wrap" id="ring-waste">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Waste</div>
+            </div>
+          </div>
+          <div class="score-ring-wrap" id="ring-recycling">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Recycling</div>
+            </div>
+          </div>
+          <div class="score-ring-wrap" id="ring-env">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Environment</div>
+            </div>
+          </div>
+          <div class="score-ring-wrap" id="ring-sust">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Sustainability</div>
+            </div>
+          </div>
+          <div class="score-ring-wrap" id="ring-circular">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Circular</div>
+            </div>
+          </div>
+          <div class="score-ring-wrap" id="ring-carbon">
+            <svg class="score-ring-svg" viewBox="0 0 100 100">
+              <circle class="score-ring-bg" cx="50" cy="50" r="40"/>
+              <circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/>
+            </svg>
+            <div class="score-ring-center">
+              <div class="score-ring-value">—</div>
+              <div class="score-ring-label">Carbon</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sustainability Recommendations -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">💡 AI Sustainability Recommendations</div>
+        <div class="card-badge">Personalized</div>
+      </div>
+      <div id="sustainability-recs" class="recs-list"></div>
+    </div>
+
+  </section><!-- /tab-overview -->
+
+
+  <!-- ─────────────────── TAB: ANALYZE ──────────────────────── -->
+  <section id="tab-analyze" class="tab-panel">
+
+    <!-- Classification Result -->
+    <div id="classification-result" class="result-section">
+
+      <!-- Header Card -->
+      <div class="card result-header-card">
+        <div class="result-header-inner">
+          <div class="result-icon-wrap">
+            <div class="result-big-icon" id="res-icon">🗑️</div>
+          </div>
+          <div class="result-header-body">
+            <div class="result-input-label" id="res-type">Input: —</div>
+            <div class="result-category" id="res-category">—</div>
+            <div class="result-bin">
+              <span style="color:var(--text-dim)">Recommended Bin:</span>
+              <strong id="res-bin">—</strong>
+            </div>
+            <div class="result-confidence">
+              <span class="conf-label">AI Confidence</span>
+              <span class="conf-val" id="res-conf">—</span>
+            </div>
+            <div class="res-badges-wrap" id="res-badges"></div>
+          </div>
+        </div>
+        <div class="xai-box" id="res-xai"></div>
+      </div>
+
+      <!-- Recycling Intelligence -->
+      <div class="grid-2" style="gap:20px;margin-top:20px;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">♻️ Recycling Intelligence</div>
+          </div>
+          <div class="recycling-efficiency">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+              <span style="font-size:0.85rem;color:var(--text-secondary)">Recycling Efficiency</span>
+              <span id="res-eff" style="font-weight:700;color:var(--green-400)">—</span>
+            </div>
+            <div class="progress-bar-wrap">
+              <div id="res-eff-bar" class="progress-bar-fill" style="width:0;background:var(--green-500);transition:width 1s ease;"></div>
+            </div>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;">Can become →</div>
+            <div id="res-products" class="products-wrap"></div>
+          </div>
+          <div style="margin-top:16px;">
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:8px;">♻️ Recycling Steps</div>
+            <ol id="res-steps" class="recycling-steps"></ol>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🔧 Upcycling Ideas</div>
+          </div>
+          <div id="res-upcycle" class="upcycle-grid"></div>
+        </div>
+      </div>
+
+      <!-- Risk & Alerts Row -->
+      <div class="grid-2" style="gap:20px;margin-top:20px;">
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">⚠️ Risk Assessment</div>
+          </div>
+          <div class="risk-display">
+            <div class="risk-score-big" id="res-risk-score">—</div>
+            <div class="risk-level-badge" id="res-risk-level">—</div>
+          </div>
+          <div class="xai-box" id="res-risk-xai" style="margin-top:12px;"></div>
+          <div style="margin-top:14px;">
+            <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:10px;">🔬 Pollution Risk Breakdown</div>
+            <div id="pollution-sources"></div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">🚨 Emergency Alerts</div>
+          </div>
+          <div id="emergency-alerts"></div>
+        </div>
+      </div>
+
+      <!-- Carbon Footprint -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <div class="card-title">🌫️ Carbon Footprint Analysis</div>
+          <div class="card-badge">CO₂ Comparison</div>
+        </div>
+        <div id="carbon-comparison" class="carbon-comparison-list"></div>
+        <div class="xai-box" id="res-carbon-xai" style="margin-top:14px;"></div>
+      </div>
+
+      <!-- Environmental Impact -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <div class="card-title">🌍 Environmental Impact Analysis</div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div>
+              <span style="font-size:0.78rem;color:var(--text-dim)">Impact Score: </span>
+              <strong id="env-score-val" style="color:var(--amber)">—</strong>
+            </div>
+            <span class="card-badge" id="env-level">—</span>
+          </div>
+        </div>
+        <div class="xai-box" id="env-xai" style="margin-bottom:16px;"></div>
+        <div id="env-impact-grid" class="env-grid"></div>
+      </div>
+
+      <!-- Sustainability Scores (result) -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <div class="card-title">🌱 AI Sustainability Scores</div>
+          <div class="card-badge">XAI Powered</div>
+        </div>
+        <div class="xai-box" id="res-sust-xai" style="margin-bottom:16px;"></div>
+        <div class="score-rings-grid">
+          <!-- Rings are the same elements used by overview — JS updates them both places -->
+          <div class="score-ring-wrap" id="ring-waste-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-waste">—</div><div class="score-ring-label">Waste</div></div>
+          </div>
+          <div class="score-ring-wrap" id="ring-recycling-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-recycling">—</div><div class="score-ring-label">Recycling</div></div>
+          </div>
+          <div class="score-ring-wrap" id="ring-env-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-env">—</div><div class="score-ring-label">Environment</div></div>
+          </div>
+          <div class="score-ring-wrap" id="ring-sust-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-sust">—</div><div class="score-ring-label">Sustainability</div></div>
+          </div>
+          <div class="score-ring-wrap" id="ring-circular-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-circular">—</div><div class="score-ring-label">Circular</div></div>
+          </div>
+          <div class="score-ring-wrap" id="ring-carbon-r">
+            <svg class="score-ring-svg" viewBox="0 0 100 100"><circle class="score-ring-bg" cx="50" cy="50" r="40"/><circle class="score-ring-fill" cx="50" cy="50" r="40" style="transition:stroke-dashoffset 1.2s ease;"/></svg>
+            <div class="score-ring-center"><div class="score-ring-value" id="rscore-carbon">—</div><div class="score-ring-label">Carbon</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Circular Economy Insight -->
+      <div class="card" style="margin-top:20px;">
+        <div class="card-header">
+          <div class="card-title">🔄 Circular Economy Intelligence</div>
+        </div>
+        <div id="res-circular-insight" class="circular-insight-text"></div>
+      </div>
+
+    </div><!-- /classification-result -->
+
+    <!-- Empty State (before any analysis) -->
+    <div id="analyze-empty-state" class="empty-state">
+      <div class="empty-icon">🔍</div>
+      <div class="empty-title">Enter a waste type above to start AI analysis</div>
+      <div class="empty-sub">Try: "Plastic Bottle", "Battery", "Food Waste", "Old Laptop"…</div>
+      <div class="quick-waste-pills">
+        <button class="waste-pill" onclick="fillWaste('Plastic Bottle')">🧴 Plastic Bottle</button>
+        <button class="waste-pill" onclick="fillWaste('Battery')">🔋 Battery</button>
+        <button class="waste-pill" onclick="fillWaste('Food Waste')">🍎 Food Waste</button>
+        <button class="waste-pill" onclick="fillWaste('Laptop')">💻 Laptop</button>
+        <button class="waste-pill" onclick="fillWaste('Glass Bottle')">🫙 Glass Bottle</button>
+        <button class="waste-pill" onclick="fillWaste('Newspaper')">📰 Newspaper</button>
+        <button class="waste-pill" onclick="fillWaste('Paint Can')">🎨 Paint Can</button>
+        <button class="waste-pill" onclick="fillWaste('Medical Syringe')">🩺 Syringe</button>
+      </div>
+    </div>
+
+  </section><!-- /tab-analyze -->
+
+
+  <!-- ─────────────────── TAB: SMART BINS ───────────────────── -->
+  <section id="tab-bins" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">🗑️ Smart Bin Network</h2>
+      <button class="btn-secondary" onclick="refreshBins()" style="font-size:0.8rem;padding:8px 18px;">⟳ Refresh</button>
+    </div>
+
+    <!-- Bin Status Cards -->
+    <div id="bins-container" class="bins-grid">
+      <!-- JS renders bin cards here -->
+      <div class="card" style="grid-column:1/-1;text-align:center;padding:48px;color:var(--text-dim);">
+        Loading smart bin data…
+      </div>
+    </div>
+
+    <!-- Route Optimization -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">🗺️ AI Collection Route Optimization</div>
+        <div class="card-badge">Live Routing</div>
+      </div>
+      <div id="route-info">
+        <div style="color:var(--text-dim);font-size:0.85rem;">Route data loads with bin status…</div>
+      </div>
+    </div>
+
+  </section><!-- /tab-bins -->
+
+
+  <!-- ─────────────────── TAB: FORECAST ─────────────────────── -->
+  <section id="tab-forecast" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">📈 Waste Generation Forecasting</h2>
+      <span class="section-badge">AI Predictions</span>
+    </div>
+
+    <div class="grid-2" style="gap:24px;">
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📅 Daily Forecast (7-Day)</div>
+        </div>
+        <div style="height:260px;position:relative;">
+          <canvas id="chartDaily"></canvas>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title">📆 Monthly Forecast (12-Month)</div>
+        </div>
+        <div style="height:260px;position:relative;">
+          <canvas id="chartMonthly"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Anomalies -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">🔍 AI Anomaly Detection</div>
+        <div class="card-badge">Trend Analysis</div>
+      </div>
+      <div id="anomalies-list"></div>
+    </div>
+
+    <!-- Community Analytics -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">🏘️ Community Waste Analytics</div>
+      </div>
+      <div id="community-stats"></div>
+    </div>
+
+  </section><!-- /tab-forecast -->
+
+
+  <!-- ─────────────────── TAB: ECO GAME ─────────────────────── -->
+  <section id="tab-game" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">🎮 Waste Segregation Game</h2>
+      <div style="display:flex;align-items:center;gap:16px;">
+        <div class="game-score-display">
+          🌿 Score: <strong id="game-score">0</strong>
+        </div>
+        <span id="game-streak" class="section-badge">🔥 Streak: 0</span>
+        <button class="btn-secondary" onclick="initGame()" style="font-size:0.78rem;padding:8px 16px;">⟳ New Game</button>
+      </div>
+    </div>
+
+    <!-- Current Item to Sort -->
+    <div class="card game-item-card">
+      <div class="card-header">
+        <div class="card-title">Drag this item into the correct bin ↓</div>
+      </div>
+      <div id="current-waste-item" class="current-item-zone"></div>
+      <div id="game-feedback" class="game-feedback"></div>
+    </div>
+
+    <!-- Recycling Fact -->
+    <div class="xai-box" style="margin:16px 0;font-size:0.85rem;">
+      💡 <span id="recycling-fact">Did you know? Recycling one aluminium can saves enough energy to run a TV for 3 hours.</span>
+    </div>
+
+    <!-- Bin Targets -->
+    <div id="game-bins" class="game-bins-grid"></div>
+
+  </section><!-- /tab-game -->
+
+
+  <!-- ─────────────────── TAB: CHAT AI ──────────────────────── -->
+  <section id="tab-chat" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">💬 Conversational AI Agent</h2>
+      <span class="section-badge">Natural Language</span>
+    </div>
+
+    <!-- Quick Questions -->
+    <div class="quick-questions-bar">
+      <span style="font-size:0.78rem;color:var(--text-dim);margin-right:8px;">Quick:</span>
+      <button class="quick-question" data-q="Is this recyclable?">Is this recyclable?</button>
+      <button class="quick-question" data-q="Can I compost this?">Can I compost this?</button>
+      <button class="quick-question" data-q="Which bin should I use?">Which bin?</button>
+      <button class="quick-question" data-q="Is this hazardous?">Is it hazardous?</button>
+      <button class="quick-question" data-q="How much carbon does this produce?">Carbon output?</button>
+      <button class="quick-question" data-q="What happens if I throw this in a landfill?">Landfill impact?</button>
+      <button class="quick-question" data-q="Can I reuse this?">Can I reuse?</button>
+      <button class="quick-question" data-q="Which disposal option is most eco-friendly?">Best disposal?</button>
+    </div>
+
+    <!-- Chat Window -->
+    <div class="card chat-card">
+      <div id="chat-messages" class="chat-messages">
+        <!-- Welcome Message -->
+        <div class="chat-msg agent">
+          <div class="chat-avatar">🌿</div>
+          <div class="chat-bubble">
+            <strong>Hello! I'm EcoWaste AI Agent.</strong><br/>
+            I can answer your questions about waste management, recycling, composting, carbon footprints, and sustainability. 
+            Type your question or use the quick buttons above. You can also set the waste type in the Analyze tab for context-specific answers.
+          </div>
+        </div>
+      </div>
+      <div class="chat-input-row">
+        <input id="chat-input" class="chat-input" type="text" placeholder="Ask me anything about waste management…" />
+        <button id="chat-send" class="btn-primary" style="white-space:nowrap;">Send 💬</button>
+      </div>
+    </div>
+
+  </section><!-- /tab-chat -->
+
+
+  <!-- ─────────────────── TAB: CHALLENGES ───────────────────── -->
+  <section id="tab-challenges" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">🏆 Eco Challenges & Badges</h2>
+      <span class="section-badge">Gamification</span>
+    </div>
+
+    <div class="grid-2" style="gap:24px;">
+      <div>
+        <div class="card-title" style="margin-bottom:16px;">🎯 Active Challenges</div>
+        <div id="eco-challenges" class="challenges-list"></div>
+      </div>
+      <div>
+        <div class="card-title" style="margin-bottom:16px;">🏅 Achievement Badges</div>
+        <div id="eco-badges" class="badges-grid"></div>
+        <div class="card" style="margin-top:20px;">
+          <div class="card-header"><div class="card-title">🥇 Community Leaderboard</div></div>
+          <div id="leaderboard" class="leaderboard-list"></div>
+        </div>
+      </div>
+    </div>
+
+  </section><!-- /tab-challenges -->
+
+
+  <!-- ─────────────────── TAB: MULTI-AGENT ──────────────────── -->
+  <section id="tab-agent" class="tab-panel">
+    <div class="section-header">
+      <h2 class="section-title">🤖 Multi-Agent Communication</h2>
+      <span class="section-badge">Fetch.ai uAgents</span>
+    </div>
+
+    <!-- Agent Network Diagram -->
+    <div class="card agent-network-card">
+      <div class="card-header">
+        <div class="card-title">🌐 Agent Ecosystem</div>
+        <div class="card-badge">Protocol v1.0.0</div>
+      </div>
+      <div class="agent-network">
+        <div class="agent-node agent-node-center">
+          <div class="agent-node-icon">🌿</div>
+          <div class="agent-node-name">EcoWaste AI</div>
+          <div class="agent-node-status">● Online</div>
+        </div>
+        <div class="agent-connections">
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">🌤️</div>
+            <div class="agent-node-name">Weather Agent</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">💨</div>
+            <div class="agent-node-name">Air Quality Agent</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">🌫️</div>
+            <div class="agent-node-name">Carbon Agent</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">💧</div>
+            <div class="agent-node-name">Water Conservation</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">📚</div>
+            <div class="agent-node-name">Education Agent</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+          <div class="agent-node agent-node-peer">
+            <div class="agent-node-icon">🎯</div>
+            <div class="agent-node-name">Coordinator Agent</div>
+            <div class="agent-node-status agent-future">◌ Future</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Protocol Info -->
+    <div class="grid-2" style="gap:24px;margin-top:24px;">
+      <div class="card">
+        <div class="card-header"><div class="card-title">📡 Protocol Details</div></div>
+        <div class="protocol-details">
+          <div class="proto-row"><span class="proto-key">Protocol Name</span><span class="proto-val">EcoWasteProtocol</span></div>
+          <div class="proto-row"><span class="proto-key">Version</span><span class="proto-val">1.0.0</span></div>
+          <div class="proto-row"><span class="proto-key">Framework</span><span class="proto-val">Fetch.ai uAgents</span></div>
+          <div class="proto-row"><span class="proto-key">Message Format</span><span class="proto-val">Standardized JSON</span></div>
+          <div class="proto-row"><span class="proto-key">Transport</span><span class="proto-val">AgentVerse REST</span></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header"><div class="card-title">⚡ Actionable Triggers</div></div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.8;">
+          <div>🔄 Recycling Center Dispatch</div>
+          <div>☣️ Hazardous Waste Team Alert</div>
+          <div>🚨 Emergency Response Trigger</div>
+          <div>💨 Air Quality Alert Notification</div>
+          <div>💧 Water Contamination Warning</div>
+          <div>🌿 Carbon Offset Recommendation</div>
+          <div>📚 Community Education Request</div>
+          <div>🗺️ Collection Route Update Signal</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- JSON Payload -->
+    <div class="card" style="margin-top:24px;">
+      <div class="card-header">
+        <div class="card-title">📦 Standardized Multi-Agent JSON Payload</div>
+        <div style="display:flex;gap:10px;">
+          <button id="export-json-btn" class="btn-secondary" style="font-size:0.78rem;padding:8px 16px;">📥 Export JSON</button>
+          <button id="copy-json-btn" class="btn-secondary" style="font-size:0.78rem;padding:8px 16px;">📋 Copy</button>
+        </div>
+      </div>
+      <pre id="multi-agent-json" class="json-viewer">// Run a waste analysis to generate the multi-agent payload…
+// The JSON will appear here and can be exported or copied.</pre>
+    </div>
+
+  </section><!-- /tab-agent -->
+
+</main><!-- /main-content -->
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <span class="footer-logo">🌿</span>
+      <span class="footer-name">EcoWaste AI</span>
+      <span class="footer-sep">·</span>
+      <span style="color:var(--text-dim);font-size:0.78rem;">Fetch.ai AgentVerse · uAgents Framework</span>
+    </div>
+    <div class="footer-links">
+      <a href="/docs" target="_blank" class="footer-link">API Docs</a>
+      <a href="/api/health" target="_blank" class="footer-link">Health</a>
+      <span style="color:var(--text-dim);font-size:0.75rem;">© 2026 EcoWaste AI · MIT License</span>
+    </div>
+  </div>
+</footer>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     INLINE GLUE SCRIPTS (tiny helpers that dashboard.js needs)
+════════════════════════════════════════════════════════════ -->
+<script>
+  /* fillWaste – used by quick-pill buttons on analyze empty state */
+  function fillWaste(val) {
+    const inp = document.getElementById('input-waste');
+    if (inp) {
+      inp.value = val;
+      // Trigger analysis immediately
+      document.getElementById('analysis-form')?.dispatchEvent(new Event('submit', { cancelable: true }));
+    }
+  }
+
+  /* Show / hide empty state vs result section */
+  (function patchRenderResult() {
+    document.addEventListener('DOMContentLoaded', () => {
+      const emptyState = document.getElementById('analyze-empty-state');
+      const resultSect = document.getElementById('classification-result');
+
+      // Observe classification-result visibility
+      const observer = new MutationObserver(() => {
+        if (resultSect && resultSect.classList.contains('visible')) {
+          emptyState && (emptyState.style.display = 'none');
+        }
+      });
+      if (resultSect) observer.observe(resultSect, { attributes: true, attributeFilter: ['class'] });
+
+      /* ── Patch renderSustainabilityScores to also fill result-tab rings ── */
+      const origRender = window.renderSustainabilityScores;
+      if (typeof origRender === 'function') {
+        window.renderSustainabilityScores = function(scores) {
+          origRender(scores); // fill overview rings (ring-waste etc.)
+          // Also fill result rings (ring-waste-r etc.)
+          const rmap = {
+            'ring-waste-r':    { val: scores.waste_score,             color:'#22c55e', valId:'rscore-waste'     },
+            'ring-recycling-r':{ val: scores.recycling_score,         color:'#3b82f6', valId:'rscore-recycling' },
+            'ring-env-r':      { val: scores.environmental_score,     color:'#10b981', valId:'rscore-env'       },
+            'ring-sust-r':     { val: scores.sustainability_score,    color:'#f59e0b', valId:'rscore-sust'      },
+            'ring-circular-r': { val: scores.circular_economy_score,  color:'#8b5cf6', valId:'rscore-circular'  },
+            'ring-carbon-r':   { val: scores.carbon_reduction_score,  color:'#06b6d4', valId:'rscore-carbon'    },
+          };
+          for (const [id, cfg] of Object.entries(rmap)) {
+            const el = document.getElementById(id);
+            if (!el) continue;
+            const val   = Math.round(cfg.val || 0);
+            const circ  = 2 * Math.PI * 40;
+            const off   = circ - (val / 100) * circ;
+            const svg   = el.querySelector('.score-ring-fill');
+            const valEl = document.getElementById(cfg.valId);
+            if (svg) { svg.style.stroke = cfg.color; svg.style.strokeDasharray = circ; svg.style.strokeDashoffset = circ; setTimeout(() => { svg.style.strokeDashoffset = off; }, 120); }
+            if (valEl) valEl.textContent = val;
+          }
+        };
+      }
+    });
+  })();
+</script>
+
+<script src="/static/js/dashboard.js"></script>
+</body>
+</html>

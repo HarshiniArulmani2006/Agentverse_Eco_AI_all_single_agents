@@ -1,0 +1,34 @@
+{
+  "rules": [
+    {
+      "category": "plastic",
+      "rule": "Rinse containers to remove food residue before recycling.",
+      "impact": "Reduces batch contamination by up to 40%."
+    },
+    {
+      "category": "paper",
+      "rule": "Keep cardboard and paper clean and dry. Flatten boxes.",
+      "impact": "Increases truck volume capacity by 60%."
+    },
+    {
+      "category": "glass",
+      "rule": "Remove plastic or metal caps from glass bottles.",
+      "impact": "Prevents furnace contamination during glass melting."
+    },
+    {
+      "category": "metal",
+      "rule": "Empty and crush aluminium cans.",
+      "impact": "Saves 95% of energy required to manufacture virgin metal."
+    },
+    {
+      "category": "ewaste",
+      "rule": "Do not throw electronic devices in regular trash bins.",
+      "impact": "Recovers rare earth metals and avoids toxic chemical leaks."
+    },
+    {
+      "category": "hazardous",
+      "rule": "Never pour chemicals, paints, or solvents into household drains.",
+      "impact": "Protects municipal wastewater and groundwater resources."
+    }
+  ]
+}

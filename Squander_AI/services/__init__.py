@@ -1,0 +1,1 @@
+# EcoWaste AI Services Package

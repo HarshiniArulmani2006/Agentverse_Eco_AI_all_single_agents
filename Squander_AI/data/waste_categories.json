@@ -1,0 +1,14 @@
+{
+  "organic": { "label": "Organic", "color": "#22c55e", "icon": "🌿", "bin": "Green Bin", "target_disposal": "Composting / Biogas" },
+  "plastic": { "label": "Plastic", "color": "#3b82f6", "icon": "🧴", "bin": "Blue Bin", "target_disposal": "Mechanical / Chemical Recycling" },
+  "paper": { "label": "Paper / Cardboard", "color": "#f59e0b", "icon": "📄", "bin": "Yellow Bin", "target_disposal": "Paper Pulping Plant" },
+  "glass": { "label": "Glass", "color": "#06b6d4", "icon": "🫙", "bin": "White Bin", "target_disposal": "Glass Cullet Recycling" },
+  "metal": { "label": "Metal", "color": "#6366f1", "icon": "🥫", "bin": "Silver Bin", "target_disposal": "Metal Scrap Smelter" },
+  "ewaste": { "label": "E-Waste", "color": "#8b5cf6", "icon": "💻", "bin": "Purple Bin", "target_disposal": "E-Waste Dismantling Center" },
+  "hazardous": { "label": "Hazardous", "color": "#ef4444", "icon": "☢️", "bin": "Red Bin", "target_disposal": "High-Temp Incineration / Secure Vault" },
+  "biomedical": { "label": "Biomedical", "color": "#f43f5e", "icon": "🏥", "bin": "Red Biohazard Bin", "target_disposal": "Autoclaving / Medical Incineration" },
+  "construction": { "label": "Construction", "color": "#78716c", "icon": "🧱", "bin": "Skip / Debris Bin", "target_disposal": "Crushing & Aggregate Reuse" },
+  "industrial": { "label": "Industrial", "color": "#71717a", "icon": "🏭", "bin": "Industrial Container", "target_disposal": "Specialized Industrial Processing" },
+  "agricultural": { "label": "Agricultural", "color": "#16a34a", "icon": "🌾", "bin": "Compost / Farm Bin", "target_disposal": "Anaerobic Digestion" },
+  "mixed": { "label": "Mixed / Unknown", "color": "#94a3b8", "icon": "🗑️", "bin": "General Waste Bin", "target_disposal": "Sorting Facility / Controlled Landfill" }
+}
