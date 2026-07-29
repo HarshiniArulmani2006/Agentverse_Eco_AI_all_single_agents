@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirGuard AI – Intelligent Air Quality Monitoring & Environmental Intelligence</title>
+    <meta name="description" content="AI-Powered Air Quality Monitoring, Demographic Health Advisory, WHO Compliance & Environmental Intelligence Agent powered by Fetch.ai uAgents.">
+    <!-- Google Fonts & Lucide Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Chart.js & html2pdf.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <!-- CSS Stylesheet -->
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body class="dark-theme">
+    <!-- Navigation Bar -->
+    <header class="navbar">
+        <div class="nav-container">
+            <div class="logo-group">
+                <div class="logo-icon"><i data-lucide="shield-alert"></i></div>
+                <div>
+                    <h1 class="logo-title">AirGuard <span>AI</span></h1>
+                    <p class="logo-subtitle">Fetch.ai AgentVerse Environmental Intelligence</p>
+                </div>
+            </div>
+            
+            <div class="search-bar-container">
+                <form id="searchForm" class="search-form">
+                    <div class="input-wrapper">
+                        <i data-lucide="map-pin" class="search-icon"></i>
+                        <input type="text" id="cityInput" placeholder="Enter city name (e.g. Delhi, London, Tokyo)..." autocomplete="off" value="Delhi">
+                    </div>
+                    <button type="submit" class="btn-search"><i data-lucide="search"></i> Analyze Air</button>
+                    <button type="button" id="btnGeolocation" class="btn-icon" title="Use My Location"><i data-lucide="crosshair"></i></button>
+                </form>
+            </div>
+
+            <div class="nav-actions">
+                <button id="btnMultiCityModal" class="btn-secondary"><i data-lucide="layers"></i> Multi-City Rank</button>
+                <button id="btnExportPDF" class="btn-secondary"><i data-lucide="file-text"></i> PDF Export</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Emergency Banner (Hidden by default) -->
+    <div id="emergencyBanner" class="emergency-banner hidden">
+        <div class="container banner-flex">
+            <div class="banner-icon"><i data-lucide="alert-octagon"></i></div>
+            <div class="banner-content">
+                <h4 id="emergencyTitle">EMERGENCY AIR QUALITY ALERT</h4>
+                <p id="emergencyDesc">Hazardous pollution levels detected. Take protective action immediately.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-layout container" id="exportableArea">
+        <!-- Top Summary Grid -->
+        <section class="grid-3-col top-section">
+            <!-- Main Live AQI Card -->
+            <div class="card glass-card aqi-card">
+                <div class="card-header">
+                    <span class="badge badge-pulse" id="locationBadge"><i data-lucide="map-pin"></i> Delhi, India</span>
+                    <span class="agent-tag"><i data-lucide="cpu"></i> uAgents Active</span>
+                </div>
+                <div class="aqi-display">
+                    <div class="aqi-gauge-circle" id="aqiCircle">
+                        <span class="aqi-number" id="aqiValue">--</span>
+                        <span class="aqi-label">US AQI</span>
+                    </div>
+                    <div class="aqi-meta">
+                        <h2 class="risk-level" id="riskLevelText">Analyzing...</h2>
+                        <p class="risk-reason" id="riskReasonText">Fetching real-time satellite & sensor telemetry from Open-Meteo...</p>
+                    </div>
+                </div>
+                <!-- Risk Score Bar -->
+                <div class="score-bar-wrapper">
+                    <div class="score-header">
+                        <span>AI Air Risk Score</span>
+                        <strong id="riskScoreVal">0 / 100</strong>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" id="riskScoreFill" style="width: 0%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pattern & Source Detection Card -->
+            <div class="card glass-card pattern-card">
+                <div class="card-header">
+                    <h3><i data-lucide="fingerprint"></i> AI Pollution Pattern</h3>
+                </div>
+                <div class="dominant-pattern-box">
+                    <span class="sub-label">Dominant Classification:</span>
+                    <h3 id="dominantPatternText">Industrial Pollution</h3>
+                </div>
+                <div class="chart-container-sm">
+                    <canvas id="sourceChart"></canvas>
+                </div>
+            </div>
+
+            <!-- AI Environmental Scores Radar/Grid Card -->
+            <div class="card glass-card scores-card">
+                <div class="card-header">
+                    <h3><i data-lucide="gauge"></i> Environmental AI Scores</h3>
+                </div>
+                <div class="scores-grid">
+                    <div class="score-tile">
+                        <span class="tile-title">Air Purity</span>
+                        <strong class="tile-val" id="scoreAir">--</strong>
+                    </div>
+                    <div class="score-tile">
+                        <span class="tile-title">Health Safety</span>
+                        <strong class="tile-val" id="scoreHealth">--</strong>
+                    </div>
+                    <div class="score-tile">
+                        <span class="tile-title">Ecology Score</span>
+                        <strong class="tile-val" id="scoreEco">--</strong>
+                    </div>
+                    <div class="score-tile">
+                        <span class="tile-title">Sustainability</span>
+                        <strong class="tile-val" id="scoreSustain">--</strong>
+                    </div>
+                </div>
+                <div class="trend-strip">
+                    <div class="trend-item">
+                        <span>1 Hour:</span> <strong id="trend1h">--</strong>
+                    </div>
+                    <div class="trend-item">
+                        <span>Tomorrow:</span> <strong id="trend24h">--</strong>
+                    </div>
+                    <div class="trend-item">
+                        <span>7 Days:</span> <strong id="trend7d">--</strong>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pollutant Matrix & WHO Compliance -->
+        <section class="card glass-card section-card">
+            <div class="card-header">
+                <h3><i data-lucide="activity"></i> Pollutant Metrics & WHO Standards Compliance</h3>
+                <span class="info-tag"><i data-lucide="shield-check"></i> WHO 2026 Guidelines</span>
+            </div>
+            <div class="pollutant-grid" id="pollutantGrid">
+                <!-- Dynamic Pollutant Cards Rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Two Column Layout: Health Advisory & Activity Analyzer -->
+        <section class="grid-2-col">
+            <!-- Demographic Health Advisory Card -->
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="heart-pulse"></i> Demographic Health Risk Prediction</h3>
+                </div>
+                <div class="demographic-list" id="demographicList">
+                    <!-- Dynamic Demographic Items -->
+                </div>
+            </div>
+
+            <!-- Smart Outdoor Activity Analyzer Grid -->
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="compass"></i> Smart Outdoor Activity Suitability</h3>
+                </div>
+                <div class="activity-grid" id="activityGrid">
+                    <!-- Dynamic Activity Items -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Trends & Analytics Charts -->
+        <section class="grid-2-col">
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="trending-up"></i> 7-Day Air Quality Forecast</h3>
+                </div>
+                <div class="chart-container-md">
+                    <canvas id="trendChart"></canvas>
+                </div>
+            </div>
+
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="bar-chart-2"></i> Pollutant Concentration Breakdown</h3>
+                </div>
+                <div class="chart-container-md">
+                    <canvas id="breakdownChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Environmental Intelligence & Green Suggestions -->
+        <section class="grid-2-col">
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="globe"></i> AI Environmental Intelligence</h3>
+                </div>
+                <div class="env-intelligence-list" id="envIntelList">
+                    <!-- Dynamic Env Intel Items -->
+                </div>
+            </div>
+
+            <div class="card glass-card">
+                <div class="card-header">
+                    <h3><i data-lucide="leaf"></i> Green Lifestyle Suggestions & Carbon Metric</h3>
+                </div>
+                <div id="carbonBox" class="carbon-box">
+                    <div class="carbon-flex">
+                        <i data-lucide="cloud"></i>
+                        <div>
+                            <strong id="carbonValue">-- kg CO₂e / capita</strong>
+                            <p id="carbonClass">Estimated carbon footprint indicator</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="green-suggestions-list" id="greenSuggestionsList">
+                    <!-- Dynamic Green Suggestions -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Multi-Agent Interoperability JSON Payload Drawer/Card -->
+        <section class="card glass-card section-card">
+            <div class="card-header">
+                <h3><i data-lucide="share-2"></i> Multi-Agent Inter-Agent Payload (uAgents Protocol)</h3>
+                <button id="btnCopyJSON" class="btn-sm"><i data-lucide="copy"></i> Copy JSON</button>
+            </div>
+            <pre class="json-code-block" id="jsonPayloadBlock">Loading agent payload...</pre>
+        </section>
+    </main>
+
+    <!-- Floating Conversational AI Drawer Button -->
+    <button id="btnToggleChat" class="floating-chat-btn">
+        <i data-lucide="bot"></i> Ask AirGuard AI
+    </button>
+
+    <!-- Conversational AI Modal/Drawer -->
+    <div id="chatDrawer" class="chat-drawer hidden">
+        <div class="chat-header">
+            <div class="flex-align">
+                <i data-lucide="sparkles"></i>
+                <div>
+                    <h4>AirGuard AI Voice & Text Assistant</h4>
+                    <p>Ask real-time health, mask & activity questions</p>
+                </div>
+            </div>
+            <button id="btnCloseChat" class="btn-close">&times;</button>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <div class="chat-msg bot-msg">
+                👋 Hello! I am AirGuard AI. Ask me questions like:
+                <ul>
+                    <li>"Should I wear an N95 mask today?"</li>
+                    <li>"Can I go jogging in the park?"</li>
+                    <li>"Is the air safe for children?"</li>
+                    <li>"Which pollutant is highest?"</li>
+                </ul>
+            </div>
+        </div>
+        <div class="chat-footer">
+            <form id="chatForm" class="chat-form">
+                <input type="text" id="chatInput" placeholder="Type your query..." autocomplete="off">
+                <button type="submit" class="btn-send"><i data-lucide="send"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Multi-City Comparison Modal -->
+    <div id="multiCityModal" class="modal-overlay hidden">
+        <div class="modal-card glass-modal">
+            <div class="modal-header">
+                <h3><i data-lucide="bar-chart-3"></i> Multi-City Air Quality Ranking</h3>
+                <button id="btnCloseModal" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <label>Enter Cities to Compare (comma separated):</label>
+                    <input type="text" id="citiesCompareInput" value="Delhi, London, Tokyo, New York, Beijing" placeholder="e.g. Delhi, London, Tokyo...">
+                    <button id="btnRunCompare" class="btn-search margin-top-sm">Run Multi-City Comparison</button>
+                </div>
+
+                <div id="compareResultsContainer" class="margin-top-md">
+                    <!-- Dynamic comparison table & summary -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JS Scripts -->
+    <script src="/static/js/charts.js"></script>
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
