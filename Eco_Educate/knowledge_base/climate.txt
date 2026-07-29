@@ -1,0 +1,31 @@
+=== CLIMATE CHANGE & GLOBAL WARMING COMPREHENSIVE GUIDE ===
+
+1. DEFINITION & OVERVIEW
+Climate change refers to long-term shifts in global or regional climate patterns, primarily driven by human activities since the mid-20th century. Global warming specifically refers to the long-term heating of Earth's climate system observed since the pre-industrial period (between 1850 and 1900) due to human activities, primarily fossil fuel burning, which increases heat-trapping greenhouse gas levels in Earth's atmosphere.
+
+2. KEY GREENHOUSE GASES (GHGs)
+- Carbon Dioxide (CO2): Released through burning fossil fuels (coal, oil, natural gas), deforestation, and industrial processes. Accounts for ~76% of total emissions.
+- Methane (CH4): Emitted during production and transport of coal, natural gas, and oil, as well as livestock farming and organic waste decay. 28x more potent than CO2 over 100 years.
+- Nitrous Oxide (N2O): Emitted during agricultural and industrial activities, combustion of fossil fuels and solid waste. 265x more potent than CO2.
+- Fluorinated Gases (HFCs, PFCs, SF6): Synthetic, powerful greenhouse gases emitted from industrial applications and refrigeration.
+
+3. CAUSES OF CLIMATE CHANGE
+- Burning Fossil Fuels: Electricity generation, industry, and transportation are the largest contributors.
+- Deforestation & Land Degradation: Cutting down forests reduces the planet's capacity to absorb CO2.
+- Industrial Agriculture: Methane from cattle digestion and rice paddies, nitrous oxide from synthetic fertilizers.
+- Waste Management: Uncontrolled landfills release significant methane during decomposition.
+- Industrial Manufacturing: Cement production, chemical synthesis, and steel refining emit large volumes of carbon.
+
+4. CONSEQUENCES & IMPACTS
+- Rising Global Temperatures: The last decade was the warmest on record.
+- Melting Glaciers & Ice Sheets: Greenland and Antarctic ice sheets lose hundreds of billions of tons of ice per year.
+- Sea Level Rise: Coastal erosion, inundation of coastal cities, and loss of island habitats.
+- Extreme Weather Events: Increased frequency and intensity of heatwaves, droughts, mega-hurricanes, and severe flooding.
+- Ocean Acidification: CO2 absorption by oceans harms coral reefs, shellfish, and marine biodiversity.
+
+5. MITIGATION & ACTIONABLE SOLUTIONS
+- Switch to Renewable Energy: Adopt solar, wind, hydro, and geothermal energy sources.
+- Energy Efficiency: Use LED lighting, high-efficiency appliances, and smart insulation in buildings.
+- Sustainable Transportation: Transition to electric vehicles (EVs), public transit, cycling, and walking.
+- Forest Conservation & Reforestation: Protect existing forests and plant native trees to build carbon sinks.
+- Sustainable Consumption: Reduce single-use products, practice circular economy principles, and eat a plant-rich diet.
