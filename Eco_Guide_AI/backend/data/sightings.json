@@ -1,0 +1,25 @@
+[
+  {
+    "id": "7ab9a903-da5d-4aaf-86cd-510d8e13190a",
+    "species_name": "Bengal Tiger",
+    "scientific_name": "Panthera tigris",
+    "location": {
+      "name": "Assam",
+      "latitude": 26.577,
+      "longitude": 93.177
+    },
+    "observer_name": "Harshini",
+    "notes": "",
+    "conservation_status": "Unknown",
+    "image_filename": "",
+    "timestamp": 1785254382.022727,
+    "timestamp_readable": "2026-07-28 15:59:42 UTC",
+    "analysis": {
+      "rarity_score": 50,
+      "conservation_priority": false,
+      "flags": [],
+      "habitat_suitability": "Analysis requires location-specific data",
+      "significance": "Standard observation – contribute to citizen science"
+    }
+  }
+]
